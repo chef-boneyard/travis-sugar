@@ -16,5 +16,5 @@
 # limitations under the License.
 #
 
-git clone --depth 3 https://github.com/chef/travis-workflow-sugar.git /tmp/travis-workflow-sugar
+git clone --depth 3 git@github.com:chef/travis-workflow-sugar.git /tmp/travis-workflow-sugar
 cp --force /tmp/travis-workflow-sugar/bin/* /usr/local/bin/
