@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# Copyright:: Copyright 2017 Chef Software, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Usage: WORKDIR=example/dir run_if_changed make test
+#
+
+# If unspecified, set the workdir to the current working directoy
+WORKDIR=${WORKDIR:-"./"}
+
+# Get a list of all the files that changed from the most recent merge
+changed_files="$(git diff --name-only HEAD HEAD~1 ${WORKDIR})"
+
+# If there are no changed files for that work directory, simply exit 0.
+# Otherwise, run the given command
+if [ -z "$changed_files" ]; then
+  echo "No files were modified in '${WORKDIR}': exiting."
+  exit 0
+else
+  cd $TRAVIS_BUILD_DIR/$WORKDIR || exit 1
+  exec "$@"
+fi
